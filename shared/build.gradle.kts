@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinSqlDelight)
+    id("app.cash.sqldelight") version "2.0.0-alpha05"
 
 }
 
@@ -27,20 +27,24 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         androidMain.dependencies {
-            implementation("app.cash.sqldelight:android-driver:2.0.0")
+            implementation("app.cash.sqldelight:android-driver:2.0.0-alpha05")
         }
         iosMain.dependencies {
-            implementation("app.cash.sqldelight:native-driver:2.0.0")
+            implementation("app.cash.sqldelight:native-driver:2.0.0-alpha05")
         }
 
     }
+}
+
+repositories {
+    google()
+    mavenCentral()
 }
 
 sqldelight {
