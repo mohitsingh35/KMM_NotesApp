@@ -2,7 +2,7 @@
 agp = "8.2.2"
 kotlin = "1.9.20"
 compose = "1.5.4"
-sqlDelightVersion="2.0.0-alpha05"
+sqlDelightVersion="2.0.0"
 compose-compiler = "1.5.4"
 compose-material3 = "1.1.2"
 hilt-version="2.42"
