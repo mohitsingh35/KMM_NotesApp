@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "256170130419",
+    "project_id": "kmm-notes-df142",
+    "storage_bucket": "kmm-notes-df142.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256170130419:android:f8702260725ff035ec7086",
+        "android_client_info": {
+          "package_name": "com.ncs.notesapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmkisrzdBP3ESYDjV4cGU1V66mCWvSd8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256170130419:android:7cd45d43d2ef3ea4ec7086",
+        "android_client_info": {
+          "package_name": "com.ncs.notesapp.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmkisrzdBP3ESYDjV4cGU1V66mCWvSd8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

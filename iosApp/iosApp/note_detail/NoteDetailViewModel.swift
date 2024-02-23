@@ -13,7 +13,7 @@ extension NoteDetailScreen {
     @MainActor class NoteDetailViewModel: ObservableObject {
         private var noteDataSource: NoteDataSource?
         
-        private var noteId: Int64? = nil
+        private var noteId: Int64? =  Int64(Int(arc4random_uniform(100000))) + 1
         @Published var noteTitle = ""
         @Published var noteContent = ""
         @Published private(set) var noteColor = Note.Companion().generateRandomColor()
@@ -35,10 +35,33 @@ extension NoteDetailScreen {
         }
         
         func saveNote(onSaved: @escaping () -> Void) {
-            noteDataSource?.insertNote(
-                note: Note(id: noteId == nil ? nil : KotlinLong(value: noteId!), title: self.noteTitle, content: self.noteContent, colorHex: self.noteColor, created: DateTimeUtil().now()), completionHandler: { error in
-                    onSaved()
-                })
+            Task {
+                do {
+                    let isSuccess = try await withCheckedThrowingContinuation { continuation in
+                        DispatchQueue.main.async {
+                            Task {
+                                do {
+                                    let result = try await FirebaseManager().upsert(note: Note(id: self.noteId == nil ? nil : KotlinLong(value: self.noteId!), title: self.noteTitle, content: self.noteContent, colorHex: self.noteColor, created: DateTimeUtil().now()))
+                                    continuation.resume(returning: result)
+                                } catch {
+                                    continuation.resume(throwing: error)
+                                }
+                            }
+                        }
+                    }
+
+                    DispatchQueue.main.async {
+                        if(Bool(isSuccess)){
+                            self.noteDataSource?.insertNote(
+                                note: Note(id: self.noteId == nil ? nil : KotlinLong(value: self.noteId!), title: self.noteTitle, content: self.noteContent, colorHex: self.noteColor, created: DateTimeUtil().now()), completionHandler: { error in
+                                    onSaved()
+                                })
+                        }
+                    }
+                }
+            }
+
+            
         }
         
         func setParamsAndLoadNote(noteDataSource: NoteDataSource, noteId: Int64?) {
