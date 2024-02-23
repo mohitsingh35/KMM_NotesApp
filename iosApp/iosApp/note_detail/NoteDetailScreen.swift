@@ -30,6 +30,7 @@ struct NoteDetailScreen: View {
             Spacer()
         }.toolbar(content: {
             Button(action: {
+                
                 viewModel.saveNote {
                     self.presentation.wrappedValue.dismiss()
                 }

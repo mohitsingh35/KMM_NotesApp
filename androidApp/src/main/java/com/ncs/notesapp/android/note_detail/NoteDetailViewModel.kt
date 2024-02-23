@@ -1,9 +1,13 @@
 package com.ncs.notesapp.android.note_detail
 
 
+import android.content.Intent
+import android.widget.Toast
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ncs.notesapp.android.NotesActivity
+import com.ncs.notesapp.data.local.FirebaseManager
 import com.ncs.notesapp.domain.note.Note
 import com.ncs.notesapp.domain.note.NoteDataSource
 import com.ncs.notesapp.domain.time.DateTimeUtil
@@ -15,9 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
     private val noteDataSource: NoteDataSource,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
-
     private val noteTitle = savedStateHandle.getStateFlow("noteTitle", "")
     private val isNoteTitleFocused = savedStateHandle.getStateFlow("isNoteTitleFocused", false)
     private val noteContent = savedStateHandle.getStateFlow("noteContent", "")
@@ -82,16 +85,19 @@ class NoteDetailViewModel @Inject constructor(
 
     fun saveNote() {
         viewModelScope.launch {
-            noteDataSource.insertNote(
-                Note(
-                    id = existingNoteId,
-                    title = noteTitle.value,
-                    content = noteContent.value,
-                    colorHex = noteColor.value,
-                    created = DateTimeUtil.now()
+
+                noteDataSource.insertNote(
+                    Note(
+                        id = existingNoteId,
+                        title = noteTitle.value,
+                        content = noteContent.value,
+                        colorHex = noteColor.value,
+                        created = DateTimeUtil.now()
+                    )
                 )
-            )
-            _hasNoteBeenSaved.value = true
+                _hasNoteBeenSaved.value = true
+
         }
+
     }
 }

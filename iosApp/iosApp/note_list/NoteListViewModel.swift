@@ -29,10 +29,35 @@ extension NoteListScreen {
         }
         
         func loadNotes() {
-            noteDataSource?.getAllNotes(completionHandler: { notes, error in
-                self.notes = notes ?? []
-                self.filteredNotes = self.notes
-            })
+            Task {
+                do {
+                    let notes : [Note] = try await withCheckedThrowingContinuation { continuation in
+                        DispatchQueue.main.async {
+                            Task {
+                                do {
+                                    let result = try await FirebaseManager().getAllNotes()
+                                    continuation.resume(returning: result)
+                                } catch {
+                                    continuation.resume(throwing: error)
+                                }
+                            }
+                        }
+                    }
+
+                    DispatchQueue.main.async {
+                        for note in notes {
+                            self.noteDataSource?.insertNote(
+                                note: Note(id: note.id, title: note.title, content: note.content, colorHex: note.colorHex, created: note.created), completionHandler: { error in
+                                })
+                        }
+                        self.noteDataSource?.getAllNotes(completionHandler: { notes, error in
+                            self.notes = notes ?? []
+                            self.filteredNotes = self.notes
+                        })
+                    }
+                }
+            }
+            
         }
         
         func deleteNoteById(id: Int64?) {

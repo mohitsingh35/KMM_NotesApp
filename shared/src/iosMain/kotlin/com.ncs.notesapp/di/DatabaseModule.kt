@@ -2,6 +2,7 @@ package com.ncs.notesapp.di
 
 import com.ncs.notesapp.NoteDatabase
 import com.ncs.notesapp.data.local.DatabaseDriverFactory
+import com.ncs.notesapp.data.local.FirebaseManager
 import com.ncs.notesapp.data.note.SqlDelightNoteDataSource
 import com.ncs.notesapp.domain.note.NoteDataSource
 
